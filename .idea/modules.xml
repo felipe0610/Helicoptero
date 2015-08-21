@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LaserLightGame.iml" filepath="$PROJECT_DIR$/LaserLightGame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Helicoptero.iml" filepath="$PROJECT_DIR$/Helicoptero.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

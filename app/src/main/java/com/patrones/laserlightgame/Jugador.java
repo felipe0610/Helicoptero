@@ -17,16 +17,16 @@ public class Jugador extends Objeto {
 
     public Jugador(Bitmap res, int w, int h, int numFrames) {
 
-        x = 100;
-        y = PanelJuego.HEIGHT / 2;
-        dy = 0;
-        score = 0;
-        height = h;
-        width = w;
+        super.x = 100;
+        super.y = PanelJuego.HEIGHT / 2;
+        super.dy = 0;
+        super.height = h;
+        super.width = w;
+
+        this.spritesheet = res;
+        this.score = 0;
 
         Bitmap[] image = new Bitmap[numFrames];
-        spritesheet = res;
-
         for (int i = 0; i < image.length; i++)
         {
             image[i] = Bitmap.createBitmap(spritesheet, i*width, 0, width, height);
