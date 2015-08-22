@@ -42,7 +42,7 @@ public class Jugador extends Objeto {
 
 
     // Métodos
-    public void update(int dy, int maxDy, int dyFactor)
+    public void update(int deltaY, int maxDy, int dyFactor)
     {
         long elapsed = (System.nanoTime()-startTime)/1000000;
         if(elapsed > 100)
@@ -53,18 +53,18 @@ public class Jugador extends Objeto {
         animacion.update();
 
         if(up){
-            this.dy -= dy;
+            this.dy -= deltaY;
 
         }
         else{
-            this.dy += dy;
+            this.dy += deltaY;
         }
 
         if(dy > maxDy)dy = maxDy;
         if(dy < -maxDy)dy = -maxDy;
 
-        y += dy * dyFactor;
-        System.out.println("y: " + y);
+        this.y += dy * dyFactor;
+        System.out.println("dy: " + dy);
 
     }
 
