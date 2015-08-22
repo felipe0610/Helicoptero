@@ -38,7 +38,7 @@ public class Fondo {
     {
         canvas.drawBitmap(image, x, y, null);
         if(x<0) {
-            canvas.drawBitmap(image, x+panelJuego.HEIGHT, y, null); // x+PanelJuego.HEIGHT ??? no debería de ser x+PanelJuego.WIDTH?
+            canvas.drawBitmap(image, x+panelJuego.WIDTH, y, null);
         }
     }
 

@@ -6,7 +6,10 @@ package com.patrones.helicoptero;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,8 +22,8 @@ import framework.Objeto;
 
 public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 {
-    public static final int WIDTH = 856;
-    public static final int HEIGHT = 480;
+    public static final int WIDTH = 856; //Ancho del fondo del juego
+    public static final int HEIGHT = 480; //Alto del fondo del juego
     public static final int MOVESPEED = -5;
     private long smokeStartTime;
     private long missileStartTime;
@@ -28,9 +31,19 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     private Fondo bg;
     private Helicoptero helicoptero;
     private ArrayList<Humo> smoke;
-    private ArrayList<Misil> misil;
+    private ArrayList<Misil> misiles;
     private Random rand = new Random();
+    private boolean newGameCreated;
 
+    //Variables para cuando el jugador muere
+    private ExplosionHelicoptero explosion;
+    private long startReset;
+
+    //Reset indica el tiempo entre que el jugador muere, y vuelve a comenzar un juego nuevo. Permite un lapso de tiempo entre la muerte del jugador y un nuevo comienzo.
+    private boolean reset;
+    private boolean dissapear;
+    private boolean started;
+    private int best;
 
     public PanelJuego(Context context)
     {
@@ -39,8 +52,6 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
         //Callback al surfaceholder para interceptar events
         getHolder().addCallback(this);
-
-        thread = new MainThread(getHolder(), this);
 
         //Permite focus para poder interceptar events
         setFocusable(true);
@@ -59,6 +70,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             try{thread.setRunning(false);
                 thread.join();
                 retry = false;
+                thread = null;
 
             }catch(InterruptedException e){e.printStackTrace();}
 
@@ -72,11 +84,11 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
         bg = new Fondo(this, BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
         helicoptero = new Helicoptero(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter));
         smoke = new ArrayList<Humo>();
-        misil = new ArrayList<Misil>();
+        misiles = new ArrayList<Misil>();
         smokeStartTime=  System.nanoTime();
         missileStartTime = System.nanoTime();
 
-
+        thread = new MainThread(getHolder(),this);
 
         //Empieza el juego
         thread.setRunning(true);
@@ -88,16 +100,19 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
         if(event.getAction()==MotionEvent.ACTION_DOWN){
 
-            if(!helicoptero.getPlaying())
+            if(!helicoptero.getPlaying()&&newGameCreated && reset)
             {
                 helicoptero.setPlaying(true);
+                helicoptero.setUp(true);
             }
-            else
-            {
+            if(helicoptero.getPlaying()){
+                if(!started)started = true;
+                reset = false;
                 helicoptero.setUp(true);
             }
             return true;
         }
+
         if(event.getAction()==MotionEvent.ACTION_UP)
         {
             helicoptero.setUp(false);
@@ -115,17 +130,22 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             bg.update();
             helicoptero.update();
 
+            //Revisa que el jugador no se salga de la pantalla
+            if (fueraPantalla()) {
+                helicoptero.setPlaying(false);
+            }
+
             //Anade misiles al timer
             long missileElapsed = (System.nanoTime()-missileStartTime)/1000000;
             if(missileElapsed >(2000 - helicoptero.getScore()/4)){
 
                 System.out.println("making missile");
                 //first missile always goes down the middle
-                if (misil.size()==0) {
-                    misil.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.
+                if (misiles.size()==0) {
+                    misiles.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.
                             missile),WIDTH + 10, HEIGHT/2, helicoptero.getScore()));
                 } else {
-                    misil.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
+                    misiles.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
                             WIDTH+10, (int)(rand.nextDouble()*(HEIGHT)), helicoptero.getScore()));
                 }
 
@@ -133,21 +153,21 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 missileStartTime = System.nanoTime();
             }
             //loop a cada misil y revisa colision, remueve misiles que hagan colision
-            for(int i = 0; i< misil.size();i++)
+            for(int i = 0; i< misiles.size();i++)
             {
                 //update missile
-                misil.get(i).update();
+                misiles.get(i).update();
 
-                if(collision(misil.get(i), helicoptero))
+                if(collision(misiles.get(i), helicoptero))
                 {
-                    misil.remove(i);
+                    misiles.remove(i);
                     helicoptero.setPlaying(false);
                     break;
                 }
                 //remueve el misil si se sale de la pantalla
-                if(misil.get(i).getX()<-100)
+                if(misiles.get(i).getX()<-100)
                 {
-                    misil.remove(i);
+                    misiles.remove(i);
                     break;
                 }
             }
@@ -170,10 +190,43 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
         }
+        else
+        {
+
+            helicoptero.resetDY();
+            if(!reset){
+                newGameCreated = false;
+                startReset = System.nanoTime();
+                reset = true;
+                dissapear = true;
+                explosion = new ExplosionHelicoptero(BitmapFactory.decodeResource(getResources(),R.drawable.explosion),helicoptero);
+            }
+
+            explosion.update();
+            long resetElapsed = (System.nanoTime()-startReset)/1000000;
+
+            if(resetElapsed > 2500 && !newGameCreated){
+                newGame();
+            }
+        }
+    }
+
+    //Funcion que revisa la posicion el jugador dentro de la pantalla
+    public boolean fueraPantalla(){
+        if(helicoptero.getY() <= 0){
+            return true;
+        }
+
+        else if(helicoptero.getY() >= HEIGHT-50){
+            return true;
+        }
+
+        return false;
+
     }
     public boolean collision(Objeto a, Objeto b)
     {
-        if(Rect.intersects(a.getRectangle(),b.getRectangle()))
+        if(Rect.intersects(a.getRectangle(), b.getRectangle()))
         {
             return true;
         }
@@ -190,20 +243,62 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
-            helicoptero.draw(canvas);
+
+            if(!dissapear){
+                helicoptero.draw(canvas);
+            }
+
             //draw humo
             for(Humo sp: smoke)
             {
                 sp.draw(canvas);
             }
             //draw misiles
-            for(Misil m: misil)
+            for(Misil m: misiles)
             {
                 m.draw(canvas);
             }
 
+            //draw explosion
+            if(started)
+            {
+                explosion.draw(canvas);
+            }
+
+            drawText(canvas);
+            canvas.restoreToCount(savedState);
+
+
             canvas.restoreToCount(savedState);
         }
+    }
+
+    public void newGame(){
+        dissapear = false;
+        misiles.clear();
+        smoke.clear();
+
+        //Revisa el puntaje para el jugador en panalla
+        helicoptero.resetDY();
+        if(helicoptero.getScore() > best){
+            best = helicoptero.getScore();
+        }
+
+        helicoptero.resetScore();
+        helicoptero.setY(HEIGHT/2);
+
+
+
+        newGameCreated = true;
+    }
+
+    public void drawText(Canvas canvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setTextSize(30);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("DISTANCIA: " + (helicoptero.getScore() * 3), 10, HEIGHT - 10, paint);
+        canvas.drawText("MEJOR: " + best, WIDTH - 215, HEIGHT - 10, paint);
     }
 
 
