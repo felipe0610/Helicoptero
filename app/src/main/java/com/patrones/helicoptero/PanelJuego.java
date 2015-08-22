@@ -1,4 +1,4 @@
-package com.patrones.laserlightgame;
+package com.patrones.helicoptero;
 
 /**
  * Created by Felipe on 8/20/2015.
@@ -10,9 +10,11 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
+import com.patrones.laserlightgame.R;
 import java.util.ArrayList;
 import java.util.Random;
+import framework.Fondo;
+import framework.Objeto;
 
 
 public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
@@ -24,7 +26,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     private long missileStartTime;
     private MainThread thread;
     private Fondo bg;
-    private Jugador jugador;
+    private Helicoptero helicoptero;
     private ArrayList<Humo> smoke;
     private ArrayList<Misil> misil;
     private Random rand = new Random();
@@ -67,8 +69,8 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder){
 
-        bg = new Fondo(BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
-        jugador = new Jugador(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter), 65, 25, 3);
+        bg = new Fondo(this, BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
+        helicoptero = new Helicoptero(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter));
         smoke = new ArrayList<Humo>();
         misil = new ArrayList<Misil>();
         smokeStartTime=  System.nanoTime();
@@ -82,22 +84,23 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
     }
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
+    public boolean onTouchEvent(MotionEvent event) {
+
         if(event.getAction()==MotionEvent.ACTION_DOWN){
-            if(!jugador.getPlaying())
+
+            if(!helicoptero.getPlaying())
             {
-                jugador.setPlaying(true);
+                helicoptero.setPlaying(true);
             }
             else
             {
-                jugador.setUp(true);
+                helicoptero.setUp(true);
             }
             return true;
         }
         if(event.getAction()==MotionEvent.ACTION_UP)
         {
-            jugador.setUp(false);
+            helicoptero.setUp(false);
             return true;
         }
 
@@ -107,27 +110,23 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     public void update()
 
     {
-        if(jugador.getPlaying()) {
+        if(helicoptero.getPlaying()) {
 
             bg.update();
-            jugador.update();
+            helicoptero.update();
 
             //Anade misiles al timer
             long missileElapsed = (System.nanoTime()-missileStartTime)/1000000;
-            if(missileElapsed >(2000 - jugador.getScore()/4)){
+            if(missileElapsed >(2000 - helicoptero.getScore()/4)){
 
                 System.out.println("making missile");
                 //first missile always goes down the middle
-                if(misil.size()==0)
-                {
+                if (misil.size()==0) {
                     misil.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.
-                            missile),WIDTH + 10, HEIGHT/2, 45, 15, jugador.getScore(), 13));
-                }
-                else
-                {
-
+                            missile),WIDTH + 10, HEIGHT/2, helicoptero.getScore()));
+                } else {
                     misil.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
-                            WIDTH+10, (int)(rand.nextDouble()*(HEIGHT)),45,15, jugador.getScore(),13));
+                            WIDTH+10, (int)(rand.nextDouble()*(HEIGHT)), helicoptero.getScore()));
                 }
 
                 //reset timer
@@ -139,10 +138,10 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 //update missile
                 misil.get(i).update();
 
-                if(collision(misil.get(i), jugador))
+                if(collision(misil.get(i), helicoptero))
                 {
                     misil.remove(i);
-                    jugador.setPlaying(false);
+                    helicoptero.setPlaying(false);
                     break;
                 }
                 //remueve el misil si se sale de la pantalla
@@ -158,7 +157,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             //anade el humo
             long elapsed = (System.nanoTime() - smokeStartTime)/1000000;
             if(elapsed > 120){
-                smoke.add(new Humo(jugador.getX(), jugador.getY()+10));
+                smoke.add(new Humo(helicoptero.getX(), helicoptero.getY()+10));
                 smokeStartTime = System.nanoTime();
             }
 
@@ -189,11 +188,9 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
         if(canvas!=null) {
             final int savedState = canvas.save();
 
-
-
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
-            jugador.draw(canvas);
+            helicoptero.draw(canvas);
             //draw humo
             for(Humo sp: smoke)
             {
@@ -204,11 +201,6 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             {
                 m.draw(canvas);
             }
-
-
-
-
-
 
             canvas.restoreToCount(savedState);
         }

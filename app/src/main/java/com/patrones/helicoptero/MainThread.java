@@ -1,4 +1,4 @@
-package com.patrones.laserlightgame;
+package com.patrones.helicoptero;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;

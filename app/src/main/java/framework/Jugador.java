@@ -1,49 +1,51 @@
-package com.patrones.laserlightgame;
+package framework;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
 
 /**
  * Created by Felipe on 8/21/2015.
  */
 public class Jugador extends Objeto {
+
+    // Atributos
     private Bitmap spritesheet;
     private int score;
-
     private boolean up;
     private boolean playing;
-    private Animacion animacion = new Animacion();
+    private Animacion animacion;
     private long startTime;
 
-    public Jugador(Bitmap res, int w, int h, int numFrames) {
 
-        super.x = 100;
-        super.y = PanelJuego.HEIGHT / 2;
+    // Constructor
+    public Jugador(int x, int y, Bitmap imagen, int w, int h, int numFrames, int animationDelay) {
+
+        super.x = x;
+        super.y = y;
         super.dy = 0;
         super.height = h;
         super.width = w;
 
-        this.spritesheet = res;
+        this.spritesheet = imagen;
         this.score = 0;
 
         Bitmap[] image = new Bitmap[numFrames];
-        for (int i = 0; i < image.length; i++)
-        {
+        for (int i = 0; i < image.length; i++) {
             image[i] = Bitmap.createBitmap(spritesheet, i*width, 0, width, height);
         }
 
-        animacion.setFrames(image);
-        animacion.setDelay(10);
+        animacion = new Animacion(image);
+        animacion.setDelay(animationDelay);
         startTime = System.nanoTime();
-
     }
 
-    public void setUp(boolean b){up = b;}
 
-    public void update()
+    // Métodos
+    public void update(int dy, int maxDy, int dyFactor)
     {
         long elapsed = (System.nanoTime()-startTime)/1000000;
-        if(elapsed>100)
+        if(elapsed > 100)
         {
             score++;
             startTime = System.nanoTime();
@@ -51,17 +53,18 @@ public class Jugador extends Objeto {
         animacion.update();
 
         if(up){
-            dy -=1.0;
+            this.dy -= dy;
 
         }
         else{
-            dy +=1.0;
+            this.dy += dy;
         }
 
-        if(dy>14)dy = 14;
-        if(dy<-14)dy = -14;
+        if(dy > maxDy)dy = maxDy;
+        if(dy < -maxDy)dy = -maxDy;
 
-        y += dy*2;
+        y += dy * dyFactor;
+        System.out.println("y: " + y);
 
     }
 
@@ -70,6 +73,8 @@ public class Jugador extends Objeto {
         canvas.drawBitmap(animacion.getImage(),x,y,null);
     }
     public int getScore(){return score;}
+    public void setUp(boolean b){up = b;}
+    public boolean getUp(){return up;}
     public boolean getPlaying(){return playing;}
     public void setPlaying(boolean b){playing = b;}
     public void resetDY(){dy = 0;}

@@ -1,4 +1,4 @@
-package com.patrones.laserlightgame;
+package framework;
 
 import android.graphics.Rect;
 
@@ -28,6 +28,10 @@ public abstract class Objeto {
     public int getY()
     {
         return y;
+    }
+    public int getDy()
+    {
+        return dy;
     }
     public int getHeight()
     {

@@ -1,4 +1,4 @@
-package com.patrones.laserlightgame;
+package framework;
 
 import android.graphics.Bitmap;
 
@@ -12,6 +12,38 @@ public class Animacion {
     private long delay;
     private boolean playedOnce;
 
+
+    // Constructor
+    public Animacion(Bitmap[] frames) {
+        this.setFrames(frames);
+    }
+
+
+    // Métodos
+    public void update() {
+
+        long elapsed = (System.nanoTime()-startTime)/1000000;
+
+        if(elapsed>delay)
+        {
+            currentFrame++;
+            startTime = System.nanoTime();
+        }
+
+        if(currentFrame == frames.length){
+            currentFrame = 0;
+            playedOnce = true;
+        }
+    }
+
+
+    // Obtenedores y Modificadores
+    public Bitmap getImage(){
+        return frames[currentFrame];
+    }
+    public int getFrame(){return currentFrame;}
+    public boolean playedOnce(){return playedOnce;}
+
     public void setFrames(Bitmap[] frames)
     {
         this.frames = frames;
@@ -21,23 +53,4 @@ public class Animacion {
     public void setDelay(long d){delay = d;}
     public void setFrame(int i){currentFrame= i;}
 
-    public void update()
-    {
-        long elapsed = (System.nanoTime()-startTime)/1000000;
-
-        if(elapsed>delay)
-        {
-            currentFrame++;
-            startTime = System.nanoTime();
-        }
-        if(currentFrame == frames.length){
-            currentFrame = 0;
-            playedOnce = true;
-        }
-    }
-    public Bitmap getImage(){
-        return frames[currentFrame];
-    }
-    public int getFrame(){return currentFrame;}
-    public boolean playedOnce(){return playedOnce;}
 }
