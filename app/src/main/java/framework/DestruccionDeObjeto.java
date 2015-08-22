@@ -2,45 +2,42 @@ package framework;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.view.animation.Animation;
-
-import framework.Animacion;
 
 /**
  * Created by Felipe on 8/21/2015.
  */
-public class DestruccionDeObjeto {
+public abstract class DestruccionDeObjeto {
 
     // Atributos
+    private Bitmap grafico;
     private int x;
     private int y;
-    private int width;
-    private int height;
-    private int row;
+    private int ancho;
+    private int alto;
     private Animacion animacion;
-    private Bitmap spritesheet;
 
 
     // Constructor
-    public DestruccionDeObjeto(Bitmap imagen, int x, int y, int w, int h, int numFrames, int animationDelay){
+    public DestruccionDeObjeto(Bitmap grafico, int x, int y, int ancho, int alto, int cantFotogramas, int retrasoAnimacion){
 
         this.x = x;
         this.y = y;
-        this.height = h;
-        this.width = w;
+        this.alto = alto;
+        this.ancho = ancho;
 
-        this.spritesheet = imagen;
+        this.grafico = grafico;
 
-        Bitmap[] image = new Bitmap[numFrames];
+        Bitmap[] image = new Bitmap[cantFotogramas];
+        int row = 0;
         for(int i = 0;i<image.length;i++){
             if(i%5==0 &&i>0){
                 row++;
             }
-            image[i] = Bitmap.createBitmap(spritesheet,(i-(5*row))*width,row*height,width,height);
+            image[i] = Bitmap.createBitmap(this.grafico,(i-(5*row))* this.ancho,row* this.alto, this.ancho, this.alto);
         }
 
         animacion = new Animacion(image);
-        animacion.setDelay(animationDelay);
+        animacion.setDelay(retrasoAnimacion);
     }
 
 
@@ -56,7 +53,5 @@ public class DestruccionDeObjeto {
             animacion.update();
         }
     }
-    public int getHeight(){
-        return height;
-    }
+
 }

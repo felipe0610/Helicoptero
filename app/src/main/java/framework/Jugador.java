@@ -7,52 +7,51 @@ import android.graphics.Canvas;
 /**
  * Created by Felipe on 8/21/2015.
  */
-public class Jugador extends Objeto {
+public abstract class Jugador extends Objeto {
 
     // Atributos
-    private Bitmap spritesheet;
-    private int score;
-    private boolean up;
-    private boolean playing;
+    private Bitmap grafico;
+    private int puntaje;
+    private boolean tocandoPantalla;
+    private boolean jugando;
+    private long tiempoInicio;
     private Animacion animacion;
-    private long startTime;
 
 
     // Constructor
-    public Jugador(int x, int y, Bitmap imagen, int w, int h, int numFrames, int animationDelay) {
+    public Jugador(int x, int y, Bitmap grafico, int ancho, int alto, int cantFotogramas, int retrasoAnimacion) {
 
         super.x = x;
         super.y = y;
         super.dy = 0;
-        super.height = h;
-        super.width = w;
+        super.height = alto;
+        super.width = ancho;
 
-        this.spritesheet = imagen;
-        this.score = 0;
+        this.grafico = grafico;
+        this.puntaje = 0;
+        this.tiempoInicio = System.nanoTime();
 
-        Bitmap[] image = new Bitmap[numFrames];
+        Bitmap[] image = new Bitmap[cantFotogramas];
         for (int i = 0; i < image.length; i++) {
-            image[i] = Bitmap.createBitmap(spritesheet, i*width, 0, width, height);
+            image[i] = Bitmap.createBitmap(this.grafico, i*width, 0, width, height);
         }
-
-        animacion = new Animacion(image);
-        animacion.setDelay(animationDelay);
-        startTime = System.nanoTime();
+        this.animacion = new Animacion(image);
+        this.animacion.setDelay(retrasoAnimacion);
     }
 
 
     // Métodos
     public void update(int deltaY, int maxDy, int dyFactor)
     {
-        long elapsed = (System.nanoTime()-startTime)/1000000;
+        long elapsed = (System.nanoTime()- tiempoInicio)/1000000;
         if(elapsed > 100)
         {
-            score++;
-            startTime = System.nanoTime();
+            puntaje++;
+            tiempoInicio = System.nanoTime();
         }
         animacion.update();
 
-        if(up){
+        if(tocandoPantalla){
             this.dy -= deltaY;
 
         }
@@ -72,11 +71,20 @@ public class Jugador extends Objeto {
     {
         canvas.drawBitmap(animacion.getImage(),x,y,null);
     }
-    public int getScore(){return score;}
-    public void setUp(boolean b){up = b;}
-    public boolean getUp(){return up;}
-    public boolean getPlaying(){return playing;}
-    public void setPlaying(boolean b){playing = b;}
-    public void resetDY(){dy = 0;}
-    public void resetScore(){score = 0;}
+
+    public void resetDY() {
+        dy = 0;
+    }
+
+    public void resetPuntaje() {
+        puntaje = 0;
+    }
+
+    public int getPuntaje(){return puntaje;}
+    public void setTocandoPantalla(boolean b){
+        tocandoPantalla = b;}
+    public boolean getJugando(){return jugando;}
+    public void setJugando(boolean b){
+        jugando = b;}
+
 }

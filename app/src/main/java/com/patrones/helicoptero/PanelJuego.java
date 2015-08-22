@@ -100,22 +100,22 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
         if(event.getAction()==MotionEvent.ACTION_DOWN){
 
-            if(!helicoptero.getPlaying()&&newGameCreated && reset)
+            if(!helicoptero.getJugando()&&newGameCreated && reset)
             {
-                helicoptero.setPlaying(true);
-                helicoptero.setUp(true);
+                helicoptero.setJugando(true);
+                helicoptero.setTocandoPantalla(true);
             }
-            if(helicoptero.getPlaying()){
+            if(helicoptero.getJugando()){
                 if(!started)started = true;
                 reset = false;
-                helicoptero.setUp(true);
+                helicoptero.setTocandoPantalla(true);
             }
             return true;
         }
 
         if(event.getAction()==MotionEvent.ACTION_UP)
         {
-            helicoptero.setUp(false);
+            helicoptero.setTocandoPantalla(false);
             return true;
         }
 
@@ -125,28 +125,28 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     public void update()
 
     {
-        if(helicoptero.getPlaying()) {
+        if(helicoptero.getJugando()) {
 
             bg.update();
             helicoptero.update();
 
             //Revisa que el jugador no se salga de la pantalla
             if (fueraPantalla()) {
-                helicoptero.setPlaying(false);
+                helicoptero.setJugando(false);
             }
 
             //Anade misiles al timer
             long missileElapsed = (System.nanoTime()-missileStartTime)/1000000;
-            if(missileElapsed >(2000 - helicoptero.getScore()/4)){
+            if(missileElapsed >(2000 - helicoptero.getPuntaje()/4)){
 
                 System.out.println("making missile");
                 //first missile always goes down the middle
                 if (misiles.size()==0) {
                     misiles.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.
-                            missile),WIDTH + 10, HEIGHT/2, helicoptero.getScore()));
+                            missile),WIDTH + 10, HEIGHT/2, helicoptero.getPuntaje()));
                 } else {
                     misiles.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
-                            WIDTH+10, (int)(rand.nextDouble()*(HEIGHT)), helicoptero.getScore()));
+                            WIDTH+10, (int)(rand.nextDouble()*(HEIGHT)), helicoptero.getPuntaje()));
                 }
 
                 //reset timer
@@ -161,7 +161,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 if(collision(misiles.get(i), helicoptero))
                 {
                     misiles.remove(i);
-                    helicoptero.setPlaying(false);
+                    helicoptero.setJugando(false);
                     break;
                 }
                 //remueve el misil si se sale de la pantalla
@@ -280,11 +280,11 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
         //Revisa el puntaje para el jugador en panalla
         helicoptero.resetDY();
-        if(helicoptero.getScore() > best){
-            best = helicoptero.getScore();
+        if(helicoptero.getPuntaje() > best){
+            best = helicoptero.getPuntaje();
         }
 
-        helicoptero.resetScore();
+        helicoptero.resetPuntaje();
         helicoptero.setY(HEIGHT/2);
 
 
@@ -297,7 +297,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
         paint.setColor(Color.RED);
         paint.setTextSize(30);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("DISTANCIA: " + (helicoptero.getScore() * 3), 10, HEIGHT - 10, paint);
+        canvas.drawText("DISTANCIA: " + (helicoptero.getPuntaje() * 3), 10, HEIGHT - 10, paint);
         canvas.drawText("MEJOR: " + best, WIDTH - 215, HEIGHT - 10, paint);
     }
 

@@ -6,34 +6,32 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import java.util.Random;
 
-public class Enemigo extends Objeto {
+public abstract class Enemigo extends Objeto {
 
     // Atributos
-    private Bitmap spritesheet;
-    private int score;
-    private int speed;
-    private Random rand = new Random();
+    private Bitmap grafico;
+    private int puntaje;
+    private int velocidad;
     private Animacion animacion;
 
 
     // Constructor
-    public Enemigo(Bitmap imagen, int x, int y, int w, int h, int s, int numFrames) {
+    public Enemigo(Bitmap grafico, int x, int y, int w, int h, int s, int cantFotogramas) {
 
         super.x = x;
         super.y = y;
         super.width = w;
         super.height = h;
 
-        this.spritesheet = imagen;
-        this.score = s;
-        this.speed = 7 + (int)(rand.nextDouble()*score/30);
-        if(speed>40)speed = 40;
+        this.grafico = grafico;
+        this.puntaje = s;
+        this.velocidad = 7 + (int)((new Random()).nextDouble()* puntaje /30);
+        if(velocidad >40) velocidad = 40;
 
-        Bitmap[] image = new Bitmap[numFrames];
+        Bitmap[] image = new Bitmap[cantFotogramas];
         for(int i = 0; i<image.length;i++) {
-            image[i] = Bitmap.createBitmap(spritesheet, 0, i*height, width, height);
+            image[i] = Bitmap.createBitmap(this.grafico, 0, i*height, width, height);
         }
-
         animacion = new Animacion(image);
     }
 
@@ -41,7 +39,7 @@ public class Enemigo extends Objeto {
     // Métodos
     public void update()
     {
-        x -= speed;
+        x -= velocidad;
         animacion.update();
     }
 
@@ -52,8 +50,8 @@ public class Enemigo extends Objeto {
     }
 
 
-    public int getSpeed() {
-        return this.speed;
+    public int getVelocidad() {
+        return this.velocidad;
     }
 
     public Animacion getAnimacion() {

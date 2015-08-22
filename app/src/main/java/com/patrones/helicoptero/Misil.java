@@ -3,9 +3,6 @@ package com.patrones.helicoptero;
  * Created by Felipe on 8/21/2015.
  */
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-
-import java.util.Random;
 
 import framework.Enemigo;
 
@@ -22,7 +19,7 @@ public class Misil extends Enemigo {
                 s,
                 13
         );
-        this.getAnimacion().setDelay(100-this.getSpeed());
+        this.getAnimacion().setDelay(100-this.getVelocidad());
     }
 
 

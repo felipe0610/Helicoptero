@@ -41,7 +41,7 @@ public class Animacion {
     public Bitmap getImage(){
         return frames[currentFrame];
     }
-    public int getFrame(){return currentFrame;}
+
     public boolean playedOnce(){return playedOnce;}
 
     public void setFrames(Bitmap[] frames)
@@ -50,7 +50,7 @@ public class Animacion {
         currentFrame = 0;
         startTime = System.nanoTime();
     }
+
     public void setDelay(long d){delay = d;}
-    public void setFrame(int i){currentFrame= i;}
 
 }

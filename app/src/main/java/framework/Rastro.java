@@ -7,17 +7,17 @@ import android.graphics.Paint;
  * Created by Felipe on 8/21/2015.
  */
 
-public class Rastro extends Objeto {
+public abstract class Rastro extends Objeto {
 
     // Atributos
-    public int r;
+    public int radio;
 
 
     // Constructor
-    public Rastro(int x, int y, int r) {
+    public Rastro(int x, int y, int radio) {
         super.x = x;
         super.y = y;
-        this.r = r;
+        this.radio = radio;
     }
 
 
@@ -32,9 +32,9 @@ public class Rastro extends Objeto {
         paint.setColor(color);
         paint.setStyle(paintStyle);
 
-        canvas.drawCircle(x-r, y-r, r, paint);
-        canvas.drawCircle(x-r+2, y-r-2,r,paint);
-        canvas.drawCircle(x-r+4, y-r+1, r, paint);
+        canvas.drawCircle(x- radio, y- radio, radio, paint);
+        canvas.drawCircle(x- radio +2, y- radio -2, radio,paint);
+        canvas.drawCircle(x- radio +4, y- radio +1, radio, paint);
     }
 
 }
