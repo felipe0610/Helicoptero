@@ -16,7 +16,7 @@ public abstract class Enemigo extends Objeto {
 
 
     // Constructor
-    public Enemigo(Bitmap grafico, int x, int y, int w, int h, int s, int cantFotogramas) {
+    public Enemigo(Bitmap grafico, int x, int y, int w, int h, int puntaje, int cantFotogramas) {
 
         super.x = x;
         super.y = y;
@@ -24,8 +24,8 @@ public abstract class Enemigo extends Objeto {
         super.height = h;
 
         this.grafico = grafico;
-        this.puntaje = s;
-        this.velocidad = 7 + (int)((new Random()).nextDouble()* puntaje /30);
+        this.puntaje = puntaje;
+        this.velocidad = 7 + (int)((new Random()).nextDouble()*this.puntaje /30);
         if(velocidad >40) velocidad = 40;
 
         Bitmap[] image = new Bitmap[cantFotogramas];

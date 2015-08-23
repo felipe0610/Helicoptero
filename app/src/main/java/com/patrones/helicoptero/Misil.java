@@ -9,14 +9,14 @@ import framework.Enemigo;
 public class Misil extends Enemigo {
 
     // Constructor
-    public Misil(Bitmap imagen, int x, int y, int s) {
+    public Misil(Bitmap imagen, int x, int y, int puntaje) {
         super(
                 imagen,
                 x,
                 y,
                 45,
                 15,
-                s,
+                puntaje,
                 13
         );
         this.getAnimacion().setDelay(100-this.getVelocidad());
