@@ -15,6 +15,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import com.patrones.laserlightgame.R;
 import java.util.ArrayList;
+
+import framework.CambiadorDeEstados;
 import framework.Fondo;
 import framework.Objeto;
 
@@ -33,7 +35,10 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     private ArrayList<Humo> humo;
     private Fabrica fabricaHumo;
     private long smokeStartTime;
+    private ArrayList<CambiadorDeEstados> cambiadores;
+    private Fabrica fabricaPonerEscudo;
     private boolean newGameCreated;
+    private Paint fuenteTexto;
 
     //Variables para cuando el jugador muere
     private ExplosionHelicoptero explosion;
@@ -50,12 +55,19 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
         super(context);
         this.misiles = new ArrayList<Misil>();
         this.humo = new ArrayList<Humo>();
+        this.cambiadores = new ArrayList<CambiadorDeEstados>();
 
         //Callback al surfaceholder para interceptar events
         getHolder().addCallback(this);
 
         //Permite focus para poder interceptar events
         setFocusable(true);
+
+        //Definir la fuente de los textos inferiores
+        fuenteTexto = new Paint();
+        fuenteTexto.setColor(Color.RED);
+        fuenteTexto.setTextSize(30);
+        fuenteTexto.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
     }
 
     @Override
@@ -86,6 +98,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
         helicoptero = new Helicoptero(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter));
         fabricaMisiles = new FabricaMisiles(this);
         fabricaHumo = new FabricaHumo(this);
+        fabricaPonerEscudo = new FabricaPonerEscudo(this);
         misilTiempoComienzo = System.nanoTime();
 
         thread = new MainThread(getHolder(),this);
@@ -177,7 +190,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 humo.add((Humo)fabricaHumo.crear());
                 smokeStartTime = System.nanoTime();
             }
-
+            // Remueve el humo cuando sale de la pantalla
             for(int i = 0; i<humo.size();i++)
             {
                 humo.get(i).update();
@@ -186,6 +199,32 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                     humo.remove(i);
                 }
             }
+
+            // Añadir el cambiador de estados PonerEscudo a la lista
+            if (helicoptero.getPuntaje() % 50 == 0) {
+                System.out.println("Creando PonerEscudo");
+                cambiadores.add((PonerEscudo) fabricaPonerEscudo.crear());
+            }
+            // Para cada cambiador...
+            for(int i = 0; i< cambiadores.size();i++) {
+                // Update cambiador
+                ((PonerEscudo)cambiadores.get(i)).update();
+
+                // Comprobar colisión para remover el cambiador
+                if(collision(cambiadores.get(i), helicoptero))
+                {
+                    cambiadores.remove(i);
+                    //helicoptero.setJugando(false);
+                    break;
+                }
+                // Remueve el cambiador si se sale de la pantalla
+                if(cambiadores.get(i).getX()<-100)
+                {
+                    cambiadores.remove(i);
+                    break;
+                }
+            }
+
         }
         else
         {
@@ -257,12 +296,18 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 m.draw(canvas);
             }
 
+            //draw cambiadores
+            for(CambiadorDeEstados c: cambiadores) {
+                ((PonerEscudo)c).draw(canvas);
+            }
+
             //draw explosion
             if(started)
             {
                 explosion.draw(canvas);
             }
 
+            //draw texto
             drawText(canvas);
             canvas.restoreToCount(savedState);
         }
@@ -288,12 +333,8 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void drawText(Canvas canvas){
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        paint.setTextSize(30);
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("DISTANCIA: " + (helicoptero.getPuntaje() * 3), 10, HEIGHT - 10, paint);
-        canvas.drawText("MEJOR: " + best, WIDTH - 215, HEIGHT - 10, paint);
+        canvas.drawText("PUNTAJE: " + helicoptero.getPuntaje(), 10, HEIGHT - 10, fuenteTexto);
+        canvas.drawText("MEJOR: " + best, WIDTH - 215, HEIGHT - 10, fuenteTexto);
     }
 
     public Helicoptero getHelicoptero() {
