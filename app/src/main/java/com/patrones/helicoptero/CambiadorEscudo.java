@@ -10,10 +10,10 @@ import framework.CambiadorDeEstados;
 /**
  * Created by suarezch on 23/08/2015.
  */
-public class PonerEscudo extends CambiadorDeEstados {
+public class CambiadorEscudo extends CambiadorDeEstados {
 
     // Constructor
-    public PonerEscudo(int x, int y) {
+    public CambiadorEscudo(int x, int y) {
         super(x, y, 60, 60, "ESCUDO", 30, 10);
 
         // Para el texto

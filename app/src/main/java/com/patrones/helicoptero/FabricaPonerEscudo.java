@@ -21,7 +21,7 @@ public class FabricaPonerEscudo extends Fabrica {
 
     // Métodos
     public Objeto crear() {
-        return new PonerEscudo(
+        return new CambiadorEscudo(
                 getPanelJuego().WIDTH+10,
                 (int)(rand.nextDouble()*(getPanelJuego().HEIGHT))
         );

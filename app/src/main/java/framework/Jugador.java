@@ -67,11 +67,6 @@ public abstract class Jugador extends Objeto {
 
     }
 
-    public void draw(Canvas canvas)
-    {
-        canvas.drawBitmap(animacion.getImage(),x,y,null);
-    }
-
     public void resetDY() {
         dy = 0;
     }
@@ -85,6 +80,10 @@ public abstract class Jugador extends Objeto {
         tocandoPantalla = b;}
     public boolean getJugando(){return jugando;}
     public void setJugando(boolean b){
-        jugando = b;}
+        jugando = b;
+    }
+    public Animacion getAnimacion () {
+        return this.animacion;
+    }
 
 }

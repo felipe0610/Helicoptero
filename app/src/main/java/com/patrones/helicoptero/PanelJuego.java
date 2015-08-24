@@ -170,10 +170,10 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 //update missile
                 misiles.get(i).update();
 
-                if(collision(misiles.get(i), helicoptero))
+                if(colision(misiles.get(i), helicoptero))
                 {
+                    helicoptero.getEstado().colisionar();
                     misiles.remove(i);
-                    helicoptero.setJugando(false);
                     break;
                 }
                 //remueve el misil si se sale de la pantalla
@@ -200,23 +200,25 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
 
-            // Añadir el cambiador de estados PonerEscudo a la lista
-            if (helicoptero.getPuntaje() % 25 == 0) {
-                if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
-                    System.out.println("Creando PonerEscudo");
-                    cambiadores.add((PonerEscudo) fabricaPonerEscudo.crear());
+            // Añadir el cambiador de estados CambiadorEscudo a la lista
+            if (!(helicoptero.getEstado() instanceof EstadoConEscudo)) { // No crear CambiadorEscudo si ya tiene el escudo puesto
+                if (helicoptero.getPuntaje() % 50 == 0) {
+                    if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
+                        System.out.println("Creando CambiadorEscudo");
+                        cambiadores.add((CambiadorEscudo) fabricaPonerEscudo.crear());
+                    }
                 }
             }
             // Para cada cambiador...
             for(int i = 0; i< cambiadores.size();i++) {
                 // Update cambiador
-                ((PonerEscudo)cambiadores.get(i)).update();
+                ((CambiadorEscudo)cambiadores.get(i)).update();
 
                 // Comprobar colisión para remover el cambiador
-                if(collision(cambiadores.get(i), helicoptero))
+                if(colision(cambiadores.get(i), helicoptero))
                 {
+                    helicoptero.getEstado().tomarCambiador(cambiadores.get(i));
                     cambiadores.remove(i);
-                    //helicoptero.setEstado();
                     break;
                 }
                 // Remueve el cambiador si se sale de la pantalla
@@ -238,6 +240,8 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 dissapear = true;
                 explosion = new ExplosionHelicoptero(BitmapFactory.decodeResource(getResources(),R.drawable.explosion),helicoptero);
             }
+
+            helicoptero.setEstadoInicial();
 
             explosion.update();
             long resetElapsed = (System.nanoTime()-startReset)/1000000;
@@ -262,7 +266,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
-    public boolean collision(Objeto a, Objeto b)
+    public boolean colision(Objeto a, Objeto b)
     {
         if(Rect.intersects(a.getRectangle(), b.getRectangle()))
         {
@@ -284,7 +288,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             bg.draw(canvas);
 
             if(!dissapear){
-                helicoptero.draw(canvas);
+                helicoptero.getEstado().draw(canvas);
             }
 
             //draw humo
@@ -300,7 +304,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
             //draw cambiadores
             for(CambiadorDeEstados c: cambiadores) {
-                ((PonerEscudo)c).draw(canvas);
+                ((CambiadorEscudo)c).draw(canvas);
             }
 
             //draw explosion

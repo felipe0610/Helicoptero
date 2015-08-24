@@ -12,6 +12,9 @@ import framework.Jugador;
  */
 public class Helicoptero extends Jugador {
 
+    // Atributos
+    private IEstadoHelicoptero estado;
+
     // Constructor
     public Helicoptero(Bitmap imagen) {
         super(
@@ -23,12 +26,29 @@ public class Helicoptero extends Jugador {
                 3,
                 10
         );
+        setEstadoInicial();
     }
 
 
     // Métodos
     public void update() {
         super.update(1, 14, 2);
+    }
+
+
+    // Obtenedores y Modificadores
+    public IEstadoHelicoptero getEstado() {
+        return this.estado;
+    }
+
+    public void setEstado(IEstadoHelicoptero estado) {
+        this.estado = estado;
+    }
+
+    public void setEstadoInicial() {
+        if (!(estado instanceof EstadoNormal)) {
+            this.estado = new EstadoNormal(this);
+        }
     }
 
 }
