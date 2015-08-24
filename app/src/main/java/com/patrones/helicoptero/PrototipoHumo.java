@@ -1,23 +1,21 @@
 package com.patrones.helicoptero;
 
-import java.util.ArrayList;
-
 import framework.Objeto;
 
 /**
  * Created by suarezch on 22/08/2015.
  */
-public class FabricaHumo extends Fabrica {
+public class PrototipoHumo extends Prototipo {
 
     private Humo humo;
 
     // Constructor
-    public FabricaHumo(PanelJuego panelJuego) {
+    public PrototipoHumo(PanelJuego panelJuego) {
         super(panelJuego);
     }
 
     // Métodos
-    public Objeto get() {
+    public Objeto clonar() {
 
         if(humo == null){
             this. humo = new Humo(getPanelJuego().getHelicoptero().getX(),

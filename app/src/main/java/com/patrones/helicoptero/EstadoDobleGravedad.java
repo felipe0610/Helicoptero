@@ -18,7 +18,6 @@ public class EstadoDobleGravedad implements IEstadoHelicoptero {
     // Constructor
     public EstadoDobleGravedad(Helicoptero helicoptero) {
         this.helicoptero = helicoptero;
-        helicoptero.setDyFactor(2);
     }
 
 

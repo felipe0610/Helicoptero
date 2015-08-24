@@ -34,7 +34,6 @@ public class Helicoptero extends Jugador {
     // Métodos
     public void update() {
         super.update(1, 14);
-        //super.update(1, 14, 2);
     }
 
 

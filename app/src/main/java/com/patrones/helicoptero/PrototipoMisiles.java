@@ -1,16 +1,16 @@
 package com.patrones.helicoptero;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
+
 import com.patrones.laserlightgame.R;
-import java.util.ArrayList;
+
 import java.util.Random;
 import framework.Objeto;
 
 /**
  * Created by suarezch on 22/08/2015.
  */
-public class FabricaMisiles extends Fabrica {
+public class PrototipoMisiles extends Prototipo {
 
     // Atributos
 
@@ -18,13 +18,13 @@ public class FabricaMisiles extends Fabrica {
     private Misil misil;
 
     // Constructor
-    public FabricaMisiles(PanelJuego panelJuego) {
+    public PrototipoMisiles(PanelJuego panelJuego) {
         super(panelJuego);
         this.rand =  new Random();
     }
 
     // Métodos
-    public Objeto get() {
+    public Objeto clonar() {
 
         //Se crea el prototipo, el primer misil va en el centro
         if(misil == null){

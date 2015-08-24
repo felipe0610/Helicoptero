@@ -31,13 +31,13 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     private Fondo bg;
     private Helicoptero helicoptero;
     private ArrayList<Misil> misiles;
-    private Fabrica fabricaMisiles;
+    private Prototipo prototipoMisiles;
     private ArrayList<Humo> humo;
-    private Fabrica fabricaHumo;
+    private Prototipo prototipoHumo;
     private long smokeStartTime;
     private ArrayList<CambiadorDeEstados> cambiadores;
-    private Fabrica fabricaPonerEscudo;
-    private Fabrica fabricaCambiadorGravedad;
+    private Prototipo prototipoPonerEscudo;
+    private Prototipo prototipoCambiadorGravedad;
     private boolean newGameCreated;
     private Paint fuenteTexto;
 
@@ -97,10 +97,10 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
         bg = new Fondo(this, BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
         helicoptero = new Helicoptero(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter));
-        fabricaMisiles = new FabricaMisiles(this);
-        fabricaHumo = new FabricaHumo(this);
-        fabricaPonerEscudo = new FabricaCambiadorEscudo(this);
-        fabricaCambiadorGravedad = new FabricaCambiadorGravedad(this);
+        prototipoMisiles = new PrototipoMisiles(this);
+        prototipoHumo = new PrototipoHumo(this);
+        prototipoPonerEscudo = new PrototipoCambiadorEscudo(this);
+        prototipoCambiadorGravedad = new PrototipoCambiadorGravedad(this);
         misilTiempoComienzo = System.nanoTime();
 
         thread = new MainThread(getHolder(),this);
@@ -155,7 +155,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
                 System.out.println("creando misil");
 
-                misiles.add((Misil)fabricaMisiles.get());
+                misiles.add((Misil) prototipoMisiles.clonar());
 
                 //reset timer
                 misilTiempoComienzo = System.nanoTime();
@@ -184,7 +184,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             //anade el humo
             long elapsed = (System.nanoTime() - smokeStartTime)/1000000;
             if(elapsed > 120) {
-                humo.add((Humo)fabricaHumo.get());
+                humo.add((Humo) prototipoHumo.clonar());
                 smokeStartTime = System.nanoTime();
             }
             // Remueve el humo cuando sale de la pantalla
@@ -202,7 +202,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 if (helicoptero.getPuntaje() % 150 == 0) {
                     if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
                         System.out.println("Creando CambiadorEscudo");
-                        cambiadores.add((CambiadorEscudo) fabricaPonerEscudo.get());
+                        cambiadores.add((CambiadorEscudo) prototipoPonerEscudo.clonar());
                     }
                 }
             }
@@ -211,9 +211,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 if (helicoptero.getPuntaje() % 250 == 0) {
                     if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
                         System.out.println("Creando CambiadorGravedad");
-                        System.out.println("* a");
-                        cambiadores.add((CambiadorGravedad) fabricaCambiadorGravedad.get());
-                        System.out.println("* b");
+                        cambiadores.add((CambiadorGravedad) prototipoCambiadorGravedad.clonar());
                     }
                 }
             }

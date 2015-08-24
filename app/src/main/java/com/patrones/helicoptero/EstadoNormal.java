@@ -16,7 +16,6 @@ public class EstadoNormal implements IEstadoHelicoptero {
     // Constructor
     public EstadoNormal(Helicoptero helicoptero) {
         this.helicoptero = helicoptero;
-        helicoptero.setDyFactor(1);
     }
 
 

@@ -7,7 +7,7 @@ import framework.Objeto;
 /**
  * Created by suarezch on 23/08/2015.
  */
-public class FabricaCambiadorEscudo extends Fabrica {
+public class PrototipoCambiadorEscudo extends Prototipo {
 
     // Atributos
     private Random rand;
@@ -15,13 +15,13 @@ public class FabricaCambiadorEscudo extends Fabrica {
 
 
     // Constructor
-    public FabricaCambiadorEscudo(PanelJuego panelJuego) {
+    public PrototipoCambiadorEscudo(PanelJuego panelJuego) {
         super(panelJuego);
         this.rand =  new Random();
     }
 
     // Métodos
-    public Objeto get() {
+    public Objeto clonar() {
 
         if(cambiadorEscudo == null){
             this.cambiadorEscudo = new CambiadorEscudo(getPanelJuego().WIDTH+10,(int)(rand.nextDouble()*(getPanelJuego().HEIGHT)));
