@@ -53,9 +53,7 @@ public abstract class Jugador extends Objeto{
 
         if(tocandoPantalla){
             this.dy -= deltaY;
-
-        }
-        else{
+        } else {
             this.dy += deltaY;
         }
 
@@ -63,7 +61,6 @@ public abstract class Jugador extends Objeto{
         if(dy < -maxDy)dy = -maxDy;
 
         this.y += dy * dyFactor;
-        System.out.println("dy: " + dy);
 
     }
 

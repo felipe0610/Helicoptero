@@ -3,6 +3,7 @@ package com.patrones.helicoptero;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 import framework.CambiadorDeEstados;
 
@@ -53,11 +54,18 @@ public class EstadoConEscudo implements IEstadoHelicoptero {
 
     public void tomarCambiador(CambiadorDeEstados cambiador) {
 
-        System.out.println("* aa");
         if (cambiador instanceof CambiadorEscudo) {
-            System.out.println("* bb");
             helicoptero.setEstado(new EstadoConEscudo(helicoptero));
         }
+    }
+
+    public Rect getRectangle() {
+        return new Rect(
+                helicoptero.getX(),
+                helicoptero.getY(),
+                helicoptero.getX()+helicoptero.getWidth(),
+                helicoptero.getY()+helicoptero.getHeight()
+        );
     }
 
 }
