@@ -201,9 +201,11 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             }
 
             // Añadir el cambiador de estados PonerEscudo a la lista
-            if (helicoptero.getPuntaje() % 50 == 0) {
-                System.out.println("Creando PonerEscudo");
-                cambiadores.add((PonerEscudo) fabricaPonerEscudo.crear());
+            if (helicoptero.getPuntaje() % 25 == 0) {
+                if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
+                    System.out.println("Creando PonerEscudo");
+                    cambiadores.add((PonerEscudo) fabricaPonerEscudo.crear());
+                }
             }
             // Para cada cambiador...
             for(int i = 0; i< cambiadores.size();i++) {
@@ -214,7 +216,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 if(collision(cambiadores.get(i), helicoptero))
                 {
                     cambiadores.remove(i);
-                    //helicoptero.setJugando(false);
+                    //helicoptero.setEstado();
                     break;
                 }
                 // Remueve el cambiador si se sale de la pantalla
@@ -317,6 +319,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
         dissapear = false;
         misiles.clear();
         humo.clear();
+        cambiadores.clear();
 
         //Revisa el puntaje para el jugador en panalla
         helicoptero.resetDY();

@@ -35,12 +35,12 @@ public abstract class CambiadorDeEstados extends Objeto {
     }
 
     public void draw(Canvas canvas, Paint fuenteTexto, Paint estiloCirculo) {
-        
-        // Dibujar texto
-        canvas.drawText(texto, x-10, y-10, fuenteTexto);
 
         // Dibujar círculo
-        canvas.drawCircle(x - radio, y - radio, radio, estiloCirculo);
+        canvas.drawCircle(x + radio, y + radio, radio, estiloCirculo);
+
+        // Dibujar texto
+        canvas.drawText(texto, x+5, y+35, fuenteTexto);
     }
 
 

@@ -14,19 +14,19 @@ public class PonerEscudo extends CambiadorDeEstados {
 
     // Constructor
     public PonerEscudo(int x, int y) {
-        super(x, y, 20, 20, "ESCUDO", 20, 10);
+        super(x, y, 60, 60, "ESCUDO", 30, 10);
 
         // Para el texto
         Paint fuenteTexto = new Paint();
-        fuenteTexto.setColor(Color.CYAN);
-        fuenteTexto.setTextSize(16);
-        fuenteTexto.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        fuenteTexto.setColor(Color.BLUE);
+        fuenteTexto.setTextSize(12);
+        fuenteTexto.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         this.setFuenteTexto(fuenteTexto);
 
         // Para el círculo
         Paint estiloCirculo = new Paint();
-        estiloCirculo.setColor(Color.CYAN);
-        estiloCirculo.setStyle(Paint.Style.FILL);
+        estiloCirculo.setColor(Color.YELLOW);
+        estiloCirculo.setStyle(Paint.Style.FILL_AND_STROKE);
         this.setEstiloCirculo(estiloCirculo);
     }
 
