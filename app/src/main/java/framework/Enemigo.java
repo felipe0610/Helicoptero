@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import java.util.Random;
 
-public abstract class Enemigo extends Objeto {
+public abstract class Enemigo extends Objeto implements Cloneable{
 
     // Atributos
     private Bitmap grafico;
@@ -25,9 +25,7 @@ public abstract class Enemigo extends Objeto {
 
         this.grafico = grafico;
         this.puntaje = puntaje;
-        this.velocidad = 7 + (int)((new Random()).nextDouble()*this.puntaje /30);
-        if(velocidad >40) velocidad = 40;
-
+        setVelocidad();
         Bitmap[] image = new Bitmap[cantFotogramas];
         for(int i = 0; i<image.length;i++) {
             image[i] = Bitmap.createBitmap(this.grafico, 0, i*height, width, height);
@@ -57,5 +55,28 @@ public abstract class Enemigo extends Objeto {
     public Animacion getAnimacion() {
         return this.animacion;
     }
+
+    public void setPuntaje(int puntaje){
+        this.puntaje = puntaje;
+    }
+
+    public Object clone() {
+        Object clon = null;
+
+        try {
+            clon = super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return clon;
+    }
+    public void setVelocidad(){
+        this.velocidad = 7 + (int)((new Random()).nextDouble()*this.puntaje /30);
+        if(velocidad >60) velocidad = 60;
+    }
+
+
 
 }

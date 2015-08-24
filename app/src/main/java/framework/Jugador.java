@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 /**
  * Created by Felipe on 8/21/2015.
  */
-public abstract class Jugador extends Objeto {
+public abstract class Jugador extends Objeto{
 
     // Atributos
     private Bitmap grafico;
@@ -85,5 +85,7 @@ public abstract class Jugador extends Objeto {
     public Animacion getAnimacion () {
         return this.animacion;
     }
+
+
 
 }

@@ -13,8 +13,9 @@ import framework.Objeto;
 public class FabricaMisiles extends Fabrica {
 
     // Atributos
-    private Random rand;
 
+    private Random rand;
+    private Misil misil;
 
     // Constructor
     public FabricaMisiles(PanelJuego panelJuego) {
@@ -23,13 +24,25 @@ public class FabricaMisiles extends Fabrica {
     }
 
     // Métodos
-    public Objeto crear() {
-        return new Misil(
-                BitmapFactory.decodeResource(getPanelJuego().getResources(),R.drawable.missile),
-                getPanelJuego().WIDTH+10,
-                (int)(rand.nextDouble()*(getPanelJuego().HEIGHT)),
-                getPanelJuego().getHelicoptero().getPuntaje()
-        );
+    public Objeto get() {
+
+        //Se crea el prototipo, el primer misil va en el centro
+        if(misil == null){
+            this.misil = new Misil(BitmapFactory.decodeResource(getPanelJuego().getResources(),R.drawable.
+                    missile),getPanelJuego().WIDTH + 10, getPanelJuego().HEIGHT/2, getPanelJuego().getHelicoptero().getPuntaje());
+            return this.misil;
+        }
+
+        else{
+            Misil misilNuevo = (Misil)misil.clone();
+            misilNuevo.setX(getPanelJuego().WIDTH);
+            misilNuevo.setY((int) (rand.nextDouble() * (getPanelJuego().HEIGHT)));
+            misilNuevo.setPuntaje(getPanelJuego().getHelicoptero().getPuntaje());
+            misilNuevo.setVelocidad();
+            misilNuevo.getAnimacion().setDelay(100 - misilNuevo.getVelocidad());
+            return misilNuevo;
+        }
+
     }
 
 }

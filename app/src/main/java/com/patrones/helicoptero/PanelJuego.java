@@ -151,14 +151,9 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             long missileElapsed = (System.nanoTime()-misilTiempoComienzo)/1000000;
             if(missileElapsed >(2000 - helicoptero.getPuntaje()/4)){
 
-                System.out.println("making missile");
-                //first missile always goes down the middle
-                if (misiles.size()==0) {
-                    misiles.add(new Misil(BitmapFactory.decodeResource(getResources(),R.drawable.
-                            missile),WIDTH + 10, HEIGHT/2, helicoptero.getPuntaje()));
-                } else {
-                    misiles.add((Misil)fabricaMisiles.crear());
-                }
+                System.out.println("creando misil");
+
+                misiles.add((Misil)fabricaMisiles.get());
 
                 //reset timer
                 misilTiempoComienzo = System.nanoTime();
@@ -187,7 +182,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
             //anade el humo
             long elapsed = (System.nanoTime() - smokeStartTime)/1000000;
             if(elapsed > 120) {
-                humo.add((Humo)fabricaHumo.crear());
+                humo.add((Humo)fabricaHumo.get());
                 smokeStartTime = System.nanoTime();
             }
             // Remueve el humo cuando sale de la pantalla
@@ -205,7 +200,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 if (helicoptero.getPuntaje() % 50 == 0) {
                     if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
                         System.out.println("Creando CambiadorEscudo");
-                        cambiadores.add((CambiadorEscudo) fabricaPonerEscudo.crear());
+                        cambiadores.add((CambiadorEscudo) fabricaPonerEscudo.get());
                     }
                 }
             }

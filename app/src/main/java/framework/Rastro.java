@@ -7,7 +7,7 @@ import android.graphics.Paint;
  * Created by Felipe on 8/21/2015.
  */
 
-public abstract class Rastro extends Objeto {
+public abstract class Rastro extends Objeto implements Cloneable{
 
     // Atributos
     public int radio;
@@ -35,6 +35,19 @@ public abstract class Rastro extends Objeto {
         canvas.drawCircle(x- radio, y- radio, radio, paint);
         canvas.drawCircle(x- radio +2, y- radio -2, radio,paint);
         canvas.drawCircle(x- radio +4, y- radio +1, radio, paint);
+    }
+
+    public Object clone() {
+        Object clon = null;
+
+        try {
+            clon = super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return clon;
     }
 
 }

@@ -7,7 +7,7 @@ import android.graphics.Paint;
  * Created by suarezch on 23/08/2015.
  */
 
-public abstract class CambiadorDeEstados extends Objeto {
+public abstract class CambiadorDeEstados extends Objeto implements Cloneable{
 
     // Atributos
     private String texto;
@@ -59,6 +59,19 @@ public abstract class CambiadorDeEstados extends Objeto {
     }
     public int getVelocidad() {
         return this.velocidad;
+    }
+
+    public Object clone() {
+        Object clon = null;
+
+        try {
+            clon = super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return clon;
     }
 
 }

@@ -9,17 +9,28 @@ import framework.Objeto;
  */
 public class FabricaHumo extends Fabrica {
 
+    private Humo humo;
+
     // Constructor
     public FabricaHumo(PanelJuego panelJuego) {
         super(panelJuego);
     }
 
     // Métodos
-    public Objeto crear() {
-        return new Humo(
-                getPanelJuego().getHelicoptero().getX(),
-                getPanelJuego().getHelicoptero().getY()+10
-        );
+    public Objeto get() {
+
+        if(humo == null){
+            this. humo = new Humo(getPanelJuego().getHelicoptero().getX(),
+                    getPanelJuego().getHelicoptero().getY()+10);
+            return this.humo;
+        }
+
+        else{
+            Humo humoNuevo = (Humo)this.humo.clone();
+            humoNuevo.setX(getPanelJuego().getHelicoptero().getX());
+            humoNuevo.setY(getPanelJuego().getHelicoptero().getY()+10);
+            return humoNuevo;
+        }
     }
 
 }

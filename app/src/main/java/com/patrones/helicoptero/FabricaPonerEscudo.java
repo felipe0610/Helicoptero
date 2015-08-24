@@ -11,6 +11,7 @@ public class FabricaPonerEscudo extends Fabrica {
 
     // Atributos
     private Random rand;
+    private CambiadorEscudo cambiadorEscudo;
 
 
     // Constructor
@@ -20,10 +21,19 @@ public class FabricaPonerEscudo extends Fabrica {
     }
 
     // Métodos
-    public Objeto crear() {
-        return new CambiadorEscudo(
-                getPanelJuego().WIDTH+10,
-                (int)(rand.nextDouble()*(getPanelJuego().HEIGHT))
-        );
+    public Objeto get() {
+
+        if(cambiadorEscudo == null){
+            this.cambiadorEscudo = new CambiadorEscudo(getPanelJuego().WIDTH+10,(int)(rand.nextDouble()*(getPanelJuego().HEIGHT)));
+            return this.cambiadorEscudo;
+        }
+
+        else{
+            CambiadorEscudo cambiadorEscudoNuevo = (CambiadorEscudo)this.cambiadorEscudo.clone();
+            cambiadorEscudoNuevo.setX(getPanelJuego().WIDTH+10);
+            cambiadorEscudoNuevo.setY((int) (rand.nextDouble() * (getPanelJuego().HEIGHT)));
+            return cambiadorEscudoNuevo;
+        }
+
     }
 }

@@ -18,7 +18,7 @@ public abstract class Fabrica {
 
 
     // Métodos a ser implementados
-    public abstract Objeto crear();
+    public abstract Objeto get();
 
     // Obtenedores y Modificadores
     public PanelJuego getPanelJuego() {
