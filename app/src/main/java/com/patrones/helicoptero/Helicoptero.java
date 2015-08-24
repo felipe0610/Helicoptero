@@ -24,7 +24,8 @@ public class Helicoptero extends Jugador {
                 65,
                 25,
                 3,
-                10
+                10,
+                1
         );
         setEstadoInicial();
     }
@@ -32,7 +33,7 @@ public class Helicoptero extends Jugador {
 
     // Métodos
     public void update() {
-        super.update(1, 14, 1);
+        super.update(1, 14);
         //super.update(1, 14, 2);
     }
 

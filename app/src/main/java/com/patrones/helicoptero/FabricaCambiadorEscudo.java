@@ -7,7 +7,7 @@ import framework.Objeto;
 /**
  * Created by suarezch on 23/08/2015.
  */
-public class FabricaPonerEscudo extends Fabrica {
+public class FabricaCambiadorEscudo extends Fabrica {
 
     // Atributos
     private Random rand;
@@ -15,7 +15,7 @@ public class FabricaPonerEscudo extends Fabrica {
 
 
     // Constructor
-    public FabricaPonerEscudo(PanelJuego panelJuego) {
+    public FabricaCambiadorEscudo(PanelJuego panelJuego) {
         super(panelJuego);
         this.rand =  new Random();
     }

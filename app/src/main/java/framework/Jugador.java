@@ -15,11 +15,12 @@ public abstract class Jugador extends Objeto{
     private boolean tocandoPantalla;
     private boolean jugando;
     private long tiempoInicio;
+    private int dyFactor;
     private Animacion animacion;
 
 
     // Constructor
-    public Jugador(int x, int y, Bitmap grafico, int ancho, int alto, int cantFotogramas, int retrasoAnimacion) {
+    public Jugador(int x, int y, Bitmap grafico, int ancho, int alto, int cantFotogramas, int retrasoAnimacion, int dyFactor) {
 
         super.x = x;
         super.y = y;
@@ -30,6 +31,7 @@ public abstract class Jugador extends Objeto{
         this.grafico = grafico;
         this.puntaje = 0;
         this.tiempoInicio = System.nanoTime();
+        this.dyFactor = dyFactor;
 
         Bitmap[] image = new Bitmap[cantFotogramas];
         for (int i = 0; i < image.length; i++) {
@@ -41,7 +43,7 @@ public abstract class Jugador extends Objeto{
 
 
     // Métodos
-    public void update(int deltaY, int maxDy, int dyFactor)
+    public void update(int deltaY, int maxDy)
     {
         long elapsed = (System.nanoTime()- tiempoInicio)/1000000;
         if(elapsed > 100)
@@ -60,7 +62,7 @@ public abstract class Jugador extends Objeto{
         if(dy > maxDy)dy = maxDy;
         if(dy < -maxDy)dy = -maxDy;
 
-        this.y += dy * dyFactor;
+        this.y += dy * this.dyFactor;
 
     }
 
@@ -78,6 +80,9 @@ public abstract class Jugador extends Objeto{
     public boolean getJugando(){return jugando;}
     public void setJugando(boolean b){
         jugando = b;
+    }
+    public void setDyFactor(int dyFactor) {
+        this.dyFactor = dyFactor;
     }
     public Animacion getAnimacion () {
         return this.animacion;

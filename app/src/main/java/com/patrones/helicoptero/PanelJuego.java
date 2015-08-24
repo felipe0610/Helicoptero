@@ -37,6 +37,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
     private long smokeStartTime;
     private ArrayList<CambiadorDeEstados> cambiadores;
     private Fabrica fabricaPonerEscudo;
+    private Fabrica fabricaCambiadorGravedad;
     private boolean newGameCreated;
     private Paint fuenteTexto;
 
@@ -98,7 +99,8 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
         helicoptero = new Helicoptero(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter));
         fabricaMisiles = new FabricaMisiles(this);
         fabricaHumo = new FabricaHumo(this);
-        fabricaPonerEscudo = new FabricaPonerEscudo(this);
+        fabricaPonerEscudo = new FabricaCambiadorEscudo(this);
+        fabricaCambiadorGravedad = new FabricaCambiadorGravedad(this);
         misilTiempoComienzo = System.nanoTime();
 
         thread = new MainThread(getHolder(),this);
@@ -195,19 +197,35 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
 
-            // Añadir el cambiador de estados CambiadorEscudo a la lista
+            // Añadir CambiadorEscudo a la lista
             if (!(helicoptero.getEstado() instanceof EstadoConEscudo)) { // No crear CambiadorEscudo si ya tiene el escudo puesto
-                if (helicoptero.getPuntaje() % 100 == 0) {
+                if (helicoptero.getPuntaje() % 150 == 0) {
                     if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
                         System.out.println("Creando CambiadorEscudo");
                         cambiadores.add((CambiadorEscudo) fabricaPonerEscudo.get());
                     }
                 }
             }
+            // Añadir CambiadorGravedad a la lista
+            if (!(helicoptero.getEstado() instanceof EstadoDobleGravedad)) { // No crear CambiadorGravedad si ya tiene ese estado
+                if (helicoptero.getPuntaje() % 250 == 0) {
+                    if (cambiadores.size()==0) { // Este if asegura que solo se cree una instancia durante el tiempo en que el puntaje coincide con el resto del módulo
+                        System.out.println("Creando CambiadorGravedad");
+                        System.out.println("* a");
+                        cambiadores.add((CambiadorGravedad) fabricaCambiadorGravedad.get());
+                        System.out.println("* b");
+                    }
+                }
+            }
             // Para cada cambiador...
             for(int i = 0; i< cambiadores.size();i++) {
                 // Update cambiador
-                ((CambiadorEscudo)cambiadores.get(i)).update();
+                try {
+                    ((CambiadorEscudo)cambiadores.get(i)).update();
+                } catch (Exception e) {}
+                try {
+                    ((CambiadorGravedad)cambiadores.get(i)).update();
+                } catch (Exception e) {}
 
                 // Comprobar colisión para remover el cambiador
                 if(colision(cambiadores.get(i), helicoptero))
@@ -299,7 +317,12 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
             //draw cambiadores
             for(CambiadorDeEstados c: cambiadores) {
-                ((CambiadorEscudo)c).draw(canvas);
+                try {
+                    ((CambiadorEscudo)c).draw(canvas);
+                } catch (Exception e) {}
+                try {
+                    ((CambiadorGravedad)c).draw(canvas);
+                } catch (Exception e) {}
             }
 
             //draw explosion

@@ -34,22 +34,20 @@ public abstract class CambiadorDeEstados extends Objeto implements Cloneable{
         x -= dx;
     }
 
-    public void draw(Canvas canvas, Paint fuenteTexto, Paint estiloCirculo) {
-
-        // Dibujar círculo
-        canvas.drawCircle(x + radio, y + radio, radio, estiloCirculo);
-
-        // Dibujar texto
-        canvas.drawText(texto, x+5, y+35, fuenteTexto);
-    }
-
+    public abstract void draw(Canvas canvas);
 
     // Obtenedores y Modificadores
+    public String getTexto() {
+        return this.texto;
+    }
     public Paint getFuenteTexto() {
         return this.fuenteTexto;
     }
     public void setFuenteTexto(Paint fuenteTexto) {
         this.fuenteTexto = fuenteTexto;
+    }
+    public int getRadio() {
+        return this.radio;
     }
     public Paint getEstiloCirculo() {
         return this.estiloCirculo;

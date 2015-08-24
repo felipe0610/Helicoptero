@@ -30,7 +30,7 @@ public class EstadoConEscudo implements IEstadoHelicoptero {
         estiloCirculo.setColor(Color.argb(128, 255, 255, 255));
         estiloCirculo.setStyle(Paint.Style.FILL_AND_STROKE);
         canvas.drawCircle(
-                helicoptero.getX() + 30,
+                helicoptero.getX() + 34,
                 helicoptero.getY() + 12,
                 40,
                 estiloCirculo
@@ -54,8 +54,9 @@ public class EstadoConEscudo implements IEstadoHelicoptero {
 
     public void tomarCambiador(CambiadorDeEstados cambiador) {
 
-        if (cambiador instanceof CambiadorEscudo) {
-            helicoptero.setEstado(new EstadoConEscudo(helicoptero));
+        if (cambiador instanceof CambiadorGravedad) {
+            helicoptero.setDyFactor(2);
+            helicoptero.setEstado(new EstadoDobleGravedad(helicoptero));
         }
     }
 
