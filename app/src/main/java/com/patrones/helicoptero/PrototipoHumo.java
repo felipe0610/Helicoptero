@@ -1,6 +1,6 @@
 package com.patrones.helicoptero;
 
-import framework.Objeto;
+import framework.ObjetoVolador;
 
 /**
  * Created by suarezch on 22/08/2015.
@@ -15,7 +15,7 @@ public class PrototipoHumo extends Prototipo {
     }
 
     // Métodos
-    public Objeto clonar() {
+    public ObjetoVolador clonar() {
 
         if(humo == null){
             this. humo = new Humo(getPanelJuego().getHelicoptero().getX(),

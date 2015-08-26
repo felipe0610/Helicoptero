@@ -4,9 +4,9 @@ package com.patrones.helicoptero;
  */
 import android.graphics.Bitmap;
 
-import framework.Enemigo;
+import framework.ObjetoDisparable;
 
-public class Misil extends Enemigo {
+public class Misil extends ObjetoDisparable {
 
     // Constructor
     public Misil(Bitmap imagen, int x, int y, int puntaje) {

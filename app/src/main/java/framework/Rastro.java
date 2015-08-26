@@ -7,7 +7,7 @@ import android.graphics.Paint;
  * Created by Felipe on 8/21/2015.
  */
 
-public abstract class Rastro extends Objeto implements Cloneable{
+public abstract class Rastro extends ObjetoVolador implements Cloneable{
 
     // Atributos
     public int radio;

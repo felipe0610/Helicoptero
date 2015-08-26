@@ -1,13 +1,12 @@
 package framework;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
 
 /**
  * Created by Felipe on 8/21/2015.
  */
-public abstract class Jugador extends Objeto{
+public abstract class JugadorAeronave extends ObjetoVolador {
 
     // Atributos
     private Bitmap grafico;
@@ -20,7 +19,7 @@ public abstract class Jugador extends Objeto{
 
 
     // Constructor
-    public Jugador(int x, int y, Bitmap grafico, int ancho, int alto, int cantFotogramas, int retrasoAnimacion, int dyFactor) {
+    public JugadorAeronave(int x, int y, Bitmap grafico, int ancho, int alto, int cantFotogramas, int retrasoAnimacion, int dyFactor) {
 
         super.x = x;
         super.y = y;

@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import com.patrones.laserlightgame.R;
 
 import java.util.Random;
-import framework.Objeto;
+import framework.ObjetoVolador;
 
 /**
  * Created by suarezch on 22/08/2015.
@@ -24,7 +24,7 @@ public class PrototipoMisiles extends Prototipo {
     }
 
     // Métodos
-    public Objeto clonar() {
+    public ObjetoVolador clonar() {
 
         //Se crea el prototipo, el primer misil va en el centro
         if(misil == null){

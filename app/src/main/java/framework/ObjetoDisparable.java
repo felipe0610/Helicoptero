@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import java.util.Random;
 
-public abstract class Enemigo extends Objeto implements Cloneable{
+public abstract class ObjetoDisparable extends ObjetoVolador implements Cloneable{
 
     // Atributos
     private Bitmap grafico;
@@ -16,7 +16,7 @@ public abstract class Enemigo extends Objeto implements Cloneable{
 
 
     // Constructor
-    public Enemigo(Bitmap grafico, int x, int y, int w, int h, int puntaje, int cantFotogramas) {
+    public ObjetoDisparable(Bitmap grafico, int x, int y, int w, int h, int puntaje, int cantFotogramas) {
 
         super.x = x;
         super.y = y;

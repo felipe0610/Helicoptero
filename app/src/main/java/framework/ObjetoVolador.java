@@ -5,7 +5,7 @@ import android.graphics.Rect;
 /**
  * Created by Felipe on 8/21/2015.
  */
-public abstract class Objeto {
+public abstract class ObjetoVolador {
     protected int x;
     protected int y;
     protected int dy;

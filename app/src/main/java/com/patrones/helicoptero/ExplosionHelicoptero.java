@@ -1,12 +1,8 @@
 package com.patrones.helicoptero;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import com.patrones.laserlightgame.R;
 
 import framework.DestruccionDeObjeto;
-import framework.Jugador;
 
 /**
  * Created by Felipe on 8/21/2015.

@@ -7,7 +7,7 @@ import android.graphics.Paint;
  * Created by suarezch on 23/08/2015.
  */
 
-public abstract class CambiadorDeEstados extends Objeto implements Cloneable{
+public abstract class CambiadorDeEstados extends ObjetoVolador implements Cloneable{
 
     // Atributos
     private String texto;

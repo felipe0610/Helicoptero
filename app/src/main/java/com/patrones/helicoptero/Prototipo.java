@@ -1,6 +1,6 @@
 package com.patrones.helicoptero;
 
-import framework.Objeto;
+import framework.ObjetoVolador;
 
 /**
  * Created by suarezch on 22/08/2015.
@@ -18,7 +18,7 @@ public abstract class Prototipo {
 
 
     // Métodos a ser implementados
-    public abstract Objeto clonar();
+    public abstract ObjetoVolador clonar();
 
 
     // Obtenedores y Modificadores

@@ -1,16 +1,13 @@
 package com.patrones.helicoptero;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import com.patrones.laserlightgame.R;
 
-import framework.Jugador;
+import framework.JugadorAeronave;
 
 /**
  * Created by Felipe on 8/21/2015.
  */
-public class Helicoptero extends Jugador {
+public class Helicoptero extends JugadorAeronave {
 
     // Atributos
     private IEstadoHelicoptero estado;

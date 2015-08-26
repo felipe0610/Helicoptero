@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import framework.CambiadorDeEstados;
 import framework.Fondo;
-import framework.Objeto;
+import framework.ObjetoVolador;
 
 
 public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
@@ -277,7 +277,7 @@ public class PanelJuego extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
-    public boolean colision(Objeto a, Objeto b)
+    public boolean colision(ObjetoVolador a, ObjetoVolador b)
     {
         if(Rect.intersects(a.getRectangle(), b.getRectangle()))
         {

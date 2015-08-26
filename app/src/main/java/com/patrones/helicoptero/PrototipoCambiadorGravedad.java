@@ -2,7 +2,7 @@ package com.patrones.helicoptero;
 
 import java.util.Random;
 
-import framework.Objeto;
+import framework.ObjetoVolador;
 
 /**
  * Created by suarezch on 24/08/2015.
@@ -21,7 +21,7 @@ public class PrototipoCambiadorGravedad extends Prototipo {
     }
 
     // Métodos
-    public Objeto clonar() {
+    public ObjetoVolador clonar() {
 
         if(cambiador == null){
             this.cambiador = new CambiadorGravedad(getPanelJuego().WIDTH+10,(int)(rand.nextDouble()*(getPanelJuego().HEIGHT)));
