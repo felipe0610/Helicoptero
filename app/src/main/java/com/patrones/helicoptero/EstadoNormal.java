@@ -38,7 +38,7 @@ public class EstadoNormal implements IEstadoHelicoptero {
         if (cambiador instanceof CambiadorEscudo) {
             helicoptero.setDyFactor(1);
             helicoptero.setEstado(new EstadoConEscudo(helicoptero));
-        } else if (cambiador instanceof CambiadorGravedad) {
+        } else if (cambiador instanceof CambiadorDobleGravedad) {
             helicoptero.setDyFactor(2);
             helicoptero.setEstado(new EstadoDobleGravedad(helicoptero));
         }

@@ -10,10 +10,10 @@ import framework.CambiadorDeEstados;
 /**
  * Created by suarezch on 24/08/2015.
  */
-public class CambiadorGravedad extends CambiadorDeEstados {
+public class CambiadorDobleGravedad extends CambiadorDeEstados {
 
     // Constructor
-    public CambiadorGravedad(int x, int y) {
+    public CambiadorDobleGravedad(int x, int y) {
         super(x, y, 120, 120, "DOBLE GRAVEDAD", 60, 6);
 
         // Para el texto

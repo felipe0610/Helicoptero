@@ -54,7 +54,7 @@ public class EstadoConEscudo implements IEstadoHelicoptero {
 
     public void tomarCambiador(CambiadorDeEstados cambiador) {
 
-        if (cambiador instanceof CambiadorGravedad) {
+        if (cambiador instanceof CambiadorDobleGravedad) {
             helicoptero.setDyFactor(2);
             helicoptero.setEstado(new EstadoDobleGravedad(helicoptero));
         }
